@@ -66,11 +66,19 @@ module Enumerable
           counter
         end
 
+        def my_map
+          new_array = Array.new
+          self.my_each do |n|
+              new_array.push(yield(n))
+          end
+          new_array
+        end
+
 end
 
 include Enumerable
 
-puts [1, 2, 4, 2].count { |x| x%2 == 0 }
-puts [1, 2, 4, 2].my_count { |x| x%2 == 0 }
+print [1, 2, 4, 2].map { |x| x+2 }
+print [1, 2, 4, 2].my_map { |x| x+2 }
  # %w[hi].none? { |word| puts word == "hi" }
  # %w[hi].my_none? { |word| puts word == "hi" }
