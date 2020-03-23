@@ -8,8 +8,10 @@ module Enumerable
   end
 
   def my_each_with_index
-    self.length.times do |n|
-      yield(self[n], n)
+    if self.is_a?(Array)
+      self.length.times do |n|
+        yield(self[n], n)
+      end
     end
   end
 
@@ -34,10 +36,41 @@ module Enumerable
       end
     end
 
+    def my_any?
+        check = false
+        self.my_each do |n|
+          if yield(n)
+            check = true
+          end
+          break if check == true
+        end
+      end
+
+      def my_none?
+          check = true
+          self.my_each do |n|
+            if yield(n)
+              check = false
+            end
+            break if check == false
+          end
+        end
+
+        def my_count
+          counter = 0
+          self.my_each do |n|
+            if yield(n)
+              counter += 1
+            end
+          end
+          counter
+        end
+
 end
 
 include Enumerable
 
-# [1, 2, 3, 4, 5].select { |num| puts num.even? }
- %w[ant].all? { |word| puts word.length >= 3 }
- %w[ant].my_all? { |word| puts word.length >= 3 }
+puts [1, 2, 4, 2].count { |x| x%2 == 0 }
+puts [1, 2, 4, 2].my_count { |x| x%2 == 0 }
+ # %w[hi].none? { |word| puts word == "hi" }
+ # %w[hi].my_none? { |word| puts word == "hi" }
