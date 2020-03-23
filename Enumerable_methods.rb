@@ -23,13 +23,21 @@ module Enumerable
       end
     end
   end
-  
+
+  def my_all?
+      check = true
+      self.my_each do |n|
+        if !yield(n)
+          check = false
+        end
+        break if check == false
+      end
+    end
+
 end
-
-
 
 include Enumerable
 
 # [1, 2, 3, 4, 5].select { |num| puts num.even? }
-
-[1, 2, 3, 4, 5, 6, 7, 8, 9].my_select { |num| puts num.even? }
+ %w[ant].all? { |word| puts word.length >= 3 }
+ %w[ant].my_all? { |word| puts word.length >= 3 }
