@@ -1,17 +1,16 @@
 module Enumerable
   def my_each
     length.times do |n|
-      if is_a?(Array)
-        yield(self[n])
-      end
+       yield(self[n])
     end
+    return if is_a?(Array)
   end
 
   def my_each_with_index
-      length.times do |n|
-        yield(self[n], n)
-      end
-      return if is_a?(Array)
+    length.times do |n|
+      yield(self[n], n)
+    end
+    return if is_a?(Array)
   end
 
   def my_select
@@ -64,8 +63,8 @@ module Enumerable
   end
 
   def my_map(proc = nil)
-    new_array = Array.new
-    if proc == nil
+    new_array = []
+    if proc.nil?
       my_each do |n|
         new_array.push(yield(n))
       end
@@ -83,18 +82,15 @@ module Enumerable
     my_each do |n|
       result = yield(result, n)
     end
-    return result
+    result
   end
-
 end
-
-include Enumerable
 
 def multiply_els(arr)
-  arr.my_inject { |x, y| x * y}
+  arr.my_inject { |x, y| x * y }
 end
 
-puts multiply_els([2,4,5])
+puts multiply_els([2, 4, 5])
 
-[1,2,3,4].each { |x| puts x}
-[1,2,3,4].my_each { |x| puts x}
+[1, 2, 3, 4].each { |x| puts x}
+[1, 2, 3, 4].my_each { |x| puts x}
