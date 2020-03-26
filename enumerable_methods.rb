@@ -69,8 +69,19 @@ module Enumerable
     end
   end
 
-  def my_count
-    return length unless block_given?
+  def my_count(arg = nil)
+    unless block_given?
+      counter = 0
+      unless arg.nil?
+        length.times do |n|
+          if self[n] == arg
+            counter += 1
+          end
+        end
+        return counter
+      end
+      return length
+    end
     counter = 0
     my_each do |n|
       counter += 1 if yield(n)
@@ -110,9 +121,9 @@ end
 
 puts multiply_els([2, 4, 5])
 
-p [1, 2, 3].my_inject { |memo, num| memo + num }
+p [1, 2, 3].my_count
 
-p [1, 2, 3].my_inject(1) { |memo, num| memo + num }
+p [1, 1, 1, 1, 2 ,3].my_count(1)
 # p [1, 2, 3].all? { |num| num < 4}   #should return true
 # p [1, 2, 3].my_all? { |num| num < 4}
 # p [1, 2, nil].all? #should return true
