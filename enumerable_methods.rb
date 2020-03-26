@@ -28,8 +28,12 @@ module Enumerable
     check = true
     my_each do |n|
       check = false unless yield(n)
-      break if check == false
+      unless check
+        return false
+        break
+      end
     end
+    return true
   end
 
   def my_any?
@@ -86,5 +90,5 @@ end
 
 puts multiply_els([2, 4, 5])
 
-p [1, 2, 3, 4, 5].select { |num| num > 3 }  #should return [4, 5]
-p [1, 2, 3, 4, 5].my_select { |num| num > 3 }  #should return [4, 5]
+p [1, 2, 3].all? { |num| num < 4}   #should return true
+p [1, 2, 3].my_all? { |num| num < 4}
