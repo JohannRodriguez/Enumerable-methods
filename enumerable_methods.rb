@@ -25,13 +25,20 @@ module Enumerable
   end
 
   def my_all?
+    unless block_given?
+      check = true
+      my_each do |n|
+        if self[n].nil? || self[n] == false
+          check = false
+          return false unless check
+        end
+      end
+      return true
+    end
     check = true
     my_each do |n|
       check = false unless yield(n)
-      unless check
-        return false
-        break
-      end
+      return false unless check
     end
     return true
   end
@@ -92,3 +99,7 @@ puts multiply_els([2, 4, 5])
 
 p [1, 2, 3].all? { |num| num < 4}   #should return true
 p [1, 2, 3].my_all? { |num| num < 4}
+p [1, 2, nil].all? #should return true
+p [1, 2, nil].my_all? #should return true
+p [1, false, nil].all? #should return false
+p [1, false, nil].my_all? #should return false
