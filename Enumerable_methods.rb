@@ -16,13 +16,11 @@ module Enumerable
   end
 
   def my_select
-    if self.is_a?(Array)
       new_array = Array.new
       self.my_each do |n|
         if yield(n)
           new_array.push(n)
         end
-      end
     end
   end
 
@@ -74,17 +72,17 @@ module Enumerable
           new_array
         end
 
-        def my_inject(my_inject_arg = 0)
-          self.my_each do |n|
-            my_inject_arg = yield(my_inject_arg, n)
-          end
-          my_inject_arg
+        def my_inject
+            result = self[0]
+            self.shift
+            self.my_each do |n|
+              result = yield(result, n)
+            end
+            return result
         end
 
 end
 
 include Enumerable
 
-
-puts [1,2,3,4,5].inject { |x, y| x + y}
-puts [1,2,3,4,5].my_inject { |x, y| x + y}
+multiply_els([2,4,5])
