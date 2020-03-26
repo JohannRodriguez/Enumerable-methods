@@ -71,7 +71,6 @@ module Enumerable
 
   def my_count
     return length unless block_given?
-
     counter = 0
     my_each do |n|
       counter += 1 if yield(n)
@@ -80,6 +79,7 @@ module Enumerable
   end
 
   def my_map(proc = nil)
+    return to_enum() unless block_given?
     new_array = []
     if proc.nil?
       my_each do |n|
@@ -93,9 +93,10 @@ module Enumerable
     new_array
   end
 
-  def my_inject
+  def my_inject(arg = 0)
     result = self[0]
-    shift
+    result = arg if arg != 0
+    shift if arg == 0
     my_each do |n|
       result = yield(result, n)
     end
@@ -109,9 +110,9 @@ end
 
 puts multiply_els([2, 4, 5])
 
-p [1, 2, 3].my_count  #should return 3
-p [1, 2, 3].count
+p [1, 2, 3].my_inject { |memo, num| memo + num }
 
+p [1, 2, 3].my_inject(1) { |memo, num| memo + num }
 # p [1, 2, 3].all? { |num| num < 4}   #should return true
 # p [1, 2, 3].my_all? { |num| num < 4}
 # p [1, 2, nil].all? #should return true
