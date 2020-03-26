@@ -8,17 +8,20 @@ module Enumerable
   end
 
   def my_each_with_index
+    return to_enum() unless block_given?
     length.times do |n|
       yield(self[n], n)
     end
-    return if is_a?(Array)
+    return self
   end
 
   def my_select
+    return to_enum() unless block_given?
     new_array = []
     my_each do |n|
       new_array.push(n) if yield(n)
     end
+    new_array
   end
 
   def my_all?
@@ -83,5 +86,5 @@ end
 
 puts multiply_els([2, 4, 5])
 
-[1, 2, 3].each {|i| puts "current number is: #{i}"}
-[1, 2, 3].my_each {|i| puts "current number is: #{i}"}
+p [1, 2, 3, 4, 5].select { |num| num > 3 }  #should return [4, 5]
+p [1, 2, 3, 4, 5].my_select { |num| num > 3 }  #should return [4, 5]
