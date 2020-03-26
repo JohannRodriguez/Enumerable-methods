@@ -102,12 +102,42 @@ module Enumerable
     end
   end
 
-  def my_none?
+  def my_none?(arg = nil)
+    unless block_given?
+      unless arg.nil?
+        if arg.is_a?(Integer)
+          length.times do |n|
+            if self[n] == arg
+              check = false
+              return false if check == false
+            end
+          end
+          return true
+        else
+          length.times do |n|
+            if self[n].is_a?(arg)
+              check = false
+              return false if check == false
+            end
+          end
+          return true
+        end
+      end
+      check = true
+      length.times do |n|
+        unless self[n] == false || self [n] == nil
+          check = false
+          return false if check == false
+        end
+      end
+      return true
+    end
     check = true
     my_each do |n|
       check = false if yield(n)
-      break if check == false
+      return false if check == false
     end
+    return true
   end
 
   def my_count(arg = nil)
@@ -162,16 +192,12 @@ end
 
 puts multiply_els([2, 4, 5])
 
- p [2, 2, 3].any? { |num| num % 2 == 0 }
- p [2, 2, 3].my_any? { |num| num % 2 == 0 }
+p [1, 2, 3].my_none? { |num| num > 4 }
 
-p [1, 2, 3].my_any? #should return true
-p [1, 2, nil].my_any? #should return true
-p [false, false, nil].my_any? #should return false
+p [false, nil, false].my_none? #should return true
+p [1, 'demo', 2.2].my_none? #should return false
 
+p [1, 2, "3"].my_none?(String)
+p ['1', '2', '3'].my_none?(String)
 
-p [1, 2, 3].my_any?(Integer) #should return true
-p [1, 'demo', false].my_any?(Integer) #should return true
-p ['demo', false, nil].my_any?(Integer) #should return false
-
-p [1, 2, 3].my_any?(3)
+p [1, 2, 3].my_none?(3)
