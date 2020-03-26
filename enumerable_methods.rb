@@ -31,9 +31,7 @@ module Enumerable
   def my_any?
     check = false
     my_each do |n|
-      if yield(n)
-        check = true
-      end
+      check = true if yield(n)
       break if check == true
     end
   end
@@ -41,9 +39,7 @@ module Enumerable
   def my_none?
     check = true
     my_each do |n|
-      if yield(n)
-        check = false
-      end
+      check = false if yield(n)
       break if check == false
     end
   end
@@ -51,9 +47,7 @@ module Enumerable
   def my_count
     counter = 0
     my_each do |n|
-      if yield(n)
-        counter += 1
-      end
+      counter += 1 if yield(n)
     end
     counter
   end
