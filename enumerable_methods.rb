@@ -62,11 +62,43 @@ module Enumerable
     return true
   end
 
-  def my_any?
+  def my_any?(arg = nil)
+    unless block_given?
+      unless arg.nil?
+        check = false
+        if arg.is_a?(Integer)
+          length.times do |n|
+            if self[n] == (arg)
+                check = true
+                return true if check
+            end
+          end
+          return false
+        else
+          length.times do |n|
+            if self[n].is_a?(arg)
+              check = true
+              return true if check
+            end
+          end
+          return false
+        end
+      end
+      check = false
+      length.times do |n|
+        if self[n]
+          check = true
+          return true if check
+        end
+      end
+      return false
+    end
     check = false
     my_each do |n|
-      check = true if yield(n)
-      break if check == true
+       if yield(n)
+         check = true
+         return true
+       end
     end
   end
 
@@ -130,17 +162,16 @@ end
 
 puts multiply_els([2, 4, 5])
 
-p [1, 2, 3].my_all?(Integer)
-p [1, 2, nil].my_all?(Integer)
+ p [2, 2, 3].any? { |num| num % 2 == 0 }
+ p [2, 2, 3].my_any? { |num| num % 2 == 0 }
 
-p [3, 3, 3].my_all?(3)
-p [3, 3, 1].my_all?(3)
+p [1, 2, 3].my_any? #should return true
+p [1, 2, nil].my_any? #should return true
+p [false, false, nil].my_any? #should return false
 
-# p [1, 2, 3].all? { |num| num < 4}   #should return true
-# p [1, 2, 3].my_all? { |num| num < 4}
-# p [1, 2, nil].all? #should return true
-# p [1, 2, nil].my_all? #should return true
-# p [1, false, nil].all? #should return false
-# p [1, false, nil].my_all? #should return false
-# p %w[dog door rod blade].my_all?(/d/) #should return true
-# p [1, 2, 3].my_all?(3) #should return false
+
+p [1, 2, 3].my_any?(Integer) #should return true
+p [1, 'demo', false].my_any?(Integer) #should return true
+p ['demo', false, nil].my_any?(Integer) #should return false
+
+p [1, 2, 3].my_any?(3)
