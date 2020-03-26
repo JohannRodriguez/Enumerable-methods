@@ -81,6 +81,3 @@ def multiply_els(arr)
 end
 
 puts multiply_els([2, 4, 5])
-
-[1, 2, 3, 4].each { |x| puts x }
-[1, 2, 3, 4].my_each { |x| puts x }
