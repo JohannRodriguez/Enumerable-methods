@@ -1,9 +1,10 @@
 module Enumerable
   def my_each
+    return to_enum() unless block_given?
     length.times do |n|
       yield(self[n])
     end
-    return if is_a?(Array)
+    return self
   end
 
   def my_each_with_index
@@ -81,3 +82,6 @@ def multiply_els(arr)
 end
 
 puts multiply_els([2, 4, 5])
+
+[1, 2, 3].each {|i| puts "current number is: #{i}"}
+[1, 2, 3].my_each {|i| puts "current number is: #{i}"}
