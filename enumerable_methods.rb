@@ -1,7 +1,7 @@
 module Enumerable
   def my_each
     length.times do |n|
-       yield(self[n])
+      yield(self[n])
     end
     return if is_a?(Array)
   end
@@ -16,21 +16,17 @@ module Enumerable
   def my_select
     new_array = []
     my_each do |n|
-      if yield(n)
-        new_array.push(n)
-      end
+      new_array.push(n) if yield(n)
     end
   end
 
   def my_all?
     check = true
     my_each do |n|
-      if !yield(n)
-        check = false
-      end
+      check = false unless yield(n)
       break if check == false
     end
-    end
+  end
 
   def my_any?
     check = false
@@ -92,5 +88,5 @@ end
 
 puts multiply_els([2, 4, 5])
 
-[1, 2, 3, 4].each { |x| puts x}
-[1, 2, 3, 4].my_each { |x| puts x}
+[1, 2, 3, 4].each { |x| puts x }
+[1, 2, 3, 4].my_each { |x| puts x }
