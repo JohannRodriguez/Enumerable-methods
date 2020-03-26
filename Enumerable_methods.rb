@@ -16,11 +16,13 @@ module Enumerable
   end
 
   def my_select
+    if self.is_a?(Array)
       new_array = Array.new
       self.my_each do |n|
         if yield(n)
           new_array.push(n)
         end
+      end
     end
   end
 
@@ -64,10 +66,16 @@ module Enumerable
           counter
         end
 
-        def my_map
+        def my_map(proc = nil)
           new_array = Array.new
-          self.my_each do |n|
-              new_array.push(yield(n))
+          if proc == nil
+            self.my_each do |n|
+                new_array.push(yield(n))
+            end
+          else
+            self.my_each do |n|
+                new_array.push(proc.call(n))
+            end
           end
           new_array
         end
@@ -85,4 +93,8 @@ end
 
 include Enumerable
 
-multiply_els([2,4,5])
+def multiply_els(arr)
+  arr.my_inject { |x, y| x * y}
+end
+
+puts multiply_els([2,4,5])
