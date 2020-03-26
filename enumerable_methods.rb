@@ -24,13 +24,22 @@ module Enumerable
     new_array
   end
 
-  def my_all?(arg = 0)
-    if arg != 0
+  def my_all?(arg = nil)
+    unless arg.nil?
       check = true
-      my_each do |n|
-        unless self[n] != (arg)
-          check = false
-          return false unless check
+      if arg.is_a?(Integer)
+        length.times do |n|
+          if self[n] != arg
+            check = false
+            return false unless check
+          end
+        end
+      else
+        length.times do |n|
+          unless self[n].is_a?(arg)
+            check = false
+            return false unless check
+          end
         end
       end
       return true
@@ -121,9 +130,12 @@ end
 
 puts multiply_els([2, 4, 5])
 
-p [1, 2, 3].my_count
+p [1, 2, 3].my_all?(Integer)
+p [1, 2, nil].my_all?(Integer)
 
-p [1, 1, 1, 1, 2 ,3].my_count(1)
+p [3, 3, 3].my_all?(3)
+p [3, 3, 1].my_all?(3)
+
 # p [1, 2, 3].all? { |num| num < 4}   #should return true
 # p [1, 2, 3].my_all? { |num| num < 4}
 # p [1, 2, nil].all? #should return true
