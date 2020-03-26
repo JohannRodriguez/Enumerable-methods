@@ -74,11 +74,17 @@ module Enumerable
           new_array
         end
 
+        def my_inject(my_inject_arg = 0)
+          self.my_each do |n|
+            my_inject_arg = yield(my_inject_arg, n)
+          end
+          my_inject_arg
+        end
+
 end
 
 include Enumerable
 
-print [1, 2, 4, 2].map { |x| x+2 }
-print [1, 2, 4, 2].my_map { |x| x+2 }
- # %w[hi].none? { |word| puts word == "hi" }
- # %w[hi].my_none? { |word| puts word == "hi" }
+
+puts [1,2,3,4,5].inject { |x, y| x + y}
+puts [1,2,3,4,5].my_inject { |x, y| x + y}
