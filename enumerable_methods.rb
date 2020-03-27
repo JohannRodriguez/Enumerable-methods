@@ -93,7 +93,7 @@ module Enumerable
 
   def my_inject(result = 0, symbol = nil)
     symbol, result = result, symbol if result.is_a?(Symbol) and symbol.is_a?(Integer)
-    symbol, result = result, 0  if result.is_a?(Symbol)
+    symbol, result = result, 0 if result.is_a?(Symbol)
     if !block_given?
       case symbol
       when :+
