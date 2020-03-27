@@ -2,18 +2,14 @@ module Enumerable
   def my_each
     return to_enum unless block_given?
 
-    length.times do |n|
-      yield(self[n])
-    end
+    length.times { |n| yield(n) }
     self
   end
 
   def my_each_with_index
     return to_enum unless block_given?
 
-    length.times do |n|
-      yield(self[n], n)
-    end
+    length.times { |n| yield(self[n], n) }
     self
   end
 
@@ -21,53 +17,51 @@ module Enumerable
     return to_enum unless block_given?
 
     new_array = []
-    my_each do |n|
-      new_array.push(n) if yield(n)
-    end
+    my_each { |n| new_array.push(n) if yield(n)}
     new_array
   end
 
   def my_all?(arg = nil)
     if arg.is_a?(Class)
-      my_each { | n | return false unless n.is_a?(arg) }
+      my_each { |n| return false unless n.is_a?(arg) }
     elsif arg.is_a?(String) || arg.is_a?(Integer)
-      my_each { | n | return false unless n == arg }
+      my_each { |n| return false unless n == arg }
     elsif arg != nil
-      my_each { | n | return false unless n.match(arg) }
+      my_each { |n| return false unless n.match(arg) }
     elsif !block_given?
-      my_each { | n | return false if n == false || n.nil? }
+      my_each { |n| return false if n == false || n.nil? }
     else
-      my_each { | n | return false unless yield(n) }
+      my_each { |n| return false unless yield(n) }
     end
     true
   end
 
   def my_any?(arg = nil)
     if arg.is_a?(Class)
-      my_each { | n | return true if n.is_a?(arg) }
+      my_each { |n| return true if n.is_a?(arg) }
     elsif arg.is_a?(String) || arg.is_a?(Integer)
-      my_each { | n | return true if n == arg }
+      my_each { |n| return true if n == arg }
     elsif arg != nil
-      my_each { | n | return true if n.match(arg) }
+      my_each { |n| return true if n.match(arg) }
     elsif !block_given?
-      my_each { | n | return true unless n == false || n.nil? }
+      my_each { |n| return true unless n == false || n.nil? }
     else
-      my_each { | n | return true if yield(n) }
+      my_each { |n| return true if yield(n) }
     end
   false
   end
 
   def my_none?(arg = nil)
     if arg.is_a?(Class)
-      my_each { | n | return false if n.is_a?(arg) }
+      my_each { |n| return false if n.is_a?(arg) }
     elsif arg.is_a?(String) || arg.is_a?(Integer)
-      my_each { | n | return false if n == arg }
+      my_each { |n| return false if n == arg }
     elsif arg != nil
-      my_each { | n | return false if n.match(arg) }
+      my_each { |n| return false if n.match(arg) }
     elsif !block_given?
-      my_each { | n | return false unless n == false || n.nil? }
+      my_each { |n| return false unless n == false || n.nil? }
     else
-      my_each { | n | return false if yield(n) }
+      my_each { |n| return false if yield(n) }
     end
     true
   end
@@ -93,27 +87,22 @@ module Enumerable
   end
 
   def my_map(proc = nil)
-    return to_enum() unless block_given?
+    return to_enum unless block_given?
+
     new_array = []
     if proc.nil?
-      my_each do |n|
-        new_array.push(yield(n))
-      end
+      my_each { |n|   new_array.push(yield(n)) }
     else
-      my_each do |n|
-        new_array.push(proc.call(n))
-      end
+      my_each { |n| new_array.push(proc.call(n)) }
     end
     new_array
   end
 
-  def my_inject(arg = 0)
+  def my_inject(arg = nil)
     result = self[0]
-    result = arg if arg != 0
-    shift if arg == 0
-    my_each do |n|
-      result = yield(result, n)
-    end
+    result = arg unless arg.nil?
+    shift if arg.nill?
+    my_each { |n| result = yield(result, n) }
     result
   end
 end
