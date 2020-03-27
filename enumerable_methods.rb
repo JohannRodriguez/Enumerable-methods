@@ -64,26 +64,6 @@ module Enumerable
 
   def my_any?(arg = nil)
     unless block_given?
-      unless arg.nil?
-        check = false
-        if arg.is_a?(Integer)
-          length.times do |n|
-            if self[n] == (arg)
-                check = true
-                return true if check
-            end
-          end
-          return false
-        else
-          length.times do |n|
-            if self[n].is_a?(arg)
-              check = true
-              return true if check
-            end
-          end
-          return false
-        end
-      end
       check = false
       length.times do |n|
         if self[n]
@@ -104,25 +84,6 @@ module Enumerable
 
   def my_none?(arg = nil)
     unless block_given?
-      unless arg.nil?
-        if arg.is_a?(Integer)
-          length.times do |n|
-            if self[n] == arg
-              check = false
-              return false if check == false
-            end
-          end
-          return true
-        else
-          length.times do |n|
-            if self[n].is_a?(arg)
-              check = false
-              return false if check == false
-            end
-          end
-          return true
-        end
-      end
       check = true
       length.times do |n|
         unless self[n] == false || self [n] == nil
@@ -189,15 +150,3 @@ end
 def multiply_els(arr)
   arr.my_inject { |x, y| x * y }
 end
-
-puts multiply_els([2, 4, 5])
-
-p [1, 2, 3].my_none? { |num| num > 4 }
-
-p [false, nil, false].my_none? #should return true
-p [1, 'demo', 2.2].my_none? #should return false
-
-p [1, 2, "3"].my_none?(String)
-p ['1', '2', '3'].my_none?(String)
-
-p [1, 2, 3].my_none?(3)
