@@ -6,7 +6,7 @@
 
 ## Getting Started
 
-This is a project to creater ruby methods that mimic the behaviour of some ruby classes and to practice the git flow.
+This is a project to creater ruby module with methods that mimic the full behaviour of some ruby classes without using those ruby original classes at any point and to practice the git flow.
 
 ### Setup
 - Clone the repository in your local machine
@@ -32,7 +32,3 @@ Feel free to check the [issues page](https://github.com/JohannRodriguez/Enumerab
 ## Show your support
 
 Give a ⭐️ if you like this project!
-
-## 📝 License
-
-This project is [MIT](lic.url) licensed.
