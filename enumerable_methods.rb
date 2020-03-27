@@ -58,20 +58,16 @@ module Enumerable
   end
 
   def my_none?(arg = nil)
-    unless block_given?
-      check = true
-      length.times do |n|
-        unless self[n] == false || self[n] == nil
-          check = false
-          return false if check == false
-        end
-      end
-      true
-    end
-    check = true
-    my_each do |n|
-      check = false if yield(n)
-      return false if check == false
+    if arg.is_a?(Class)
+      my_each { | n | return false if n.is_a?(arg) }
+    elsif arg.is_a?(String) || arg.is_a?(Integer)
+      my_each { | n | return false if n == arg }
+    elsif arg != nil
+      my_each { | n | return false if n.match(arg) }
+    elsif !block_given?
+      my_each { | n | return false unless n == false || n.nil? }
+    else
+      my_each { | n | return false if yield(n) }
     end
     true
   end
