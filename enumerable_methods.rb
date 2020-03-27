@@ -1,22 +1,25 @@
 module Enumerable
   def my_each
-    return to_enum() unless block_given?
+    return to_enum unless block_given?
+
     length.times do |n|
       yield(self[n])
     end
-    return self
+    self
   end
 
   def my_each_with_index
-    return to_enum() unless block_given?
+    return to_enum unless block_given?
+
     length.times do |n|
       yield(self[n], n)
     end
-    return self
+    self
   end
 
   def my_select
-    return to_enum() unless block_given?
+    return to_enum unless block_given?
+
     new_array = []
     my_each do |n|
       new_array.push(n) if yield(n)
@@ -25,25 +28,6 @@ module Enumerable
   end
 
   def my_all?(arg = nil)
-    unless arg.nil?
-      check = true
-      if arg.is_a?(Integer)
-        length.times do |n|
-          if self[n] != arg
-            check = false
-            return false unless check
-          end
-        end
-      else
-        length.times do |n|
-          unless self[n].is_a?(arg)
-            check = false
-            return false unless check
-          end
-        end
-      end
-      return true
-    end
     unless block_given?
       check = true
       my_each do |n|
@@ -59,7 +43,7 @@ module Enumerable
       check = false unless yield(n)
       return false unless check
     end
-    return true
+    true
   end
 
   def my_any?(arg = nil)
@@ -71,13 +55,13 @@ module Enumerable
           return true if check
         end
       end
-      return false
+      false
     end
     check = false
     my_each do |n|
        if yield(n)
          check = true
-         return true
+         true
        end
     end
   end
@@ -91,14 +75,14 @@ module Enumerable
           return false if check == false
         end
       end
-      return true
+      true
     end
     check = true
     my_each do |n|
       check = false if yield(n)
       return false if check == false
     end
-    return true
+    true
   end
 
   def my_count(arg = nil)
@@ -110,9 +94,9 @@ module Enumerable
             counter += 1
           end
         end
-        return counter
+        counter
       end
-      return length
+      length
     end
     counter = 0
     my_each do |n|
