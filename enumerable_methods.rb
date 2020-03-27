@@ -28,20 +28,16 @@ module Enumerable
   end
 
   def my_all?(arg = nil)
-    unless block_given?
-      check = true
-      my_each do |n|
-        if self[n].nil? || self[n] == false
-          check = false
-          return false unless check
-        end
-      end
-      return true
-    end
-    check = true
-    my_each do |n|
-      check = false unless yield(n)
-      return false unless check
+    if arg.is_a?(Class)
+      my_each { | n | return false unless n.is_a?(arg) }
+    elsif arg.is_a?(String) || arg.is_a?(Integer)
+      my_each { | n | return false unless n == arg }
+    elsif arg != nil
+      my_each { | n | return false unless n.match(arg) }
+    elsif !block_given?
+      my_each { | n | return false if n == false || n.nil? }
+    else
+      my_each { | n | return false unless yield(n) }
     end
     true
   end
@@ -70,7 +66,7 @@ module Enumerable
     unless block_given?
       check = true
       length.times do |n|
-        unless self[n] == false || self [n] == nil
+        unless self[n] == false || self[n] == nil
           check = false
           return false if check == false
         end
@@ -134,3 +130,10 @@ end
 def multiply_els(arr)
   arr.my_inject { |x, y| x * y }
 end
+
+p [1, 2, 3].my_all? { |num| num < 4}
+p [1, nil, 3].my_all?
+p [1, 2, 3].my_all?(Integer)
+p ["3", "3", "3"].my_all?("3")
+p %w[dog door rod blade].my_all?(/d/)
+p %w[ant bear ca].my_all? { |word| word.length >= 3 }
