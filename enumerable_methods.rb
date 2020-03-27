@@ -69,20 +69,12 @@ module Enumerable
   def my_count(arg = nil)
     unless block_given?
       counter = 0
-      unless arg.nil?
-        length.times do |n|
-          if self[n] == arg
-            counter += 1
-          end
-        end
-        counter
-      end
-      length
+      my_each { |n| counter += 1 if self[n] == arg }
+      return counter unless arg.nil?
+      return length
     end
     counter = 0
-    my_each do |n|
-      counter += 1 if yield(n)
-    end
+    my_each { |n| counter += 1 if yield(n)}
     counter
   end
 
