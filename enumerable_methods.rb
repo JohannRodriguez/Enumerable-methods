@@ -83,22 +83,45 @@ module Enumerable
 
     new_array = []
     if proc.nil?
-      my_each { |n|   new_array.push(yield(n)) }
+      my_each { |n| new_array.push(yield(n)) }
     else
       my_each { |n| new_array.push(proc.call(n)) }
     end
     new_array
   end
 
-  def my_inject(arg = nil)
-    result = self[0]
-    result = arg unless arg.nil?
-    shift if arg.nill?
-    my_each { |n| result = yield(result, n) }
-    result
+  def my_inject(result = 0, symbol = nil)
+    symbol, result = result, symbol if result.is_a?(Symbol) and symbol.is_a?(Integer)
+    symbol, result = result, 0  if result.is_a?(Symbol)
+    unless block_given?
+      case symbol
+      when :+
+        my_each { |n| result = result + self[n] }
+      when :*
+        my_each { |n| result = result * self[n] }
+      when :/
+        my_each { |n| result = result / self[n] }
+      when :-
+        my_each { |n| result = result - self[n] }
+      when :**
+        my_each { |n| result = result ** self[n] }
+      when :%
+        my_each { |n| result = result % self[n] }
+      end
+      result
+    else
+      my_each { |n| result = yield(result, self[n]) }
+      result
+    end
   end
 end
 
 def multiply_els(arr)
   arr.my_inject { |x, y| x * y }
 end
+
+p [1, 2, 3].my_inject { |memo, num| memo + num } #should return 6
+p [1, 2, 3].inject { |memo, num| memo + num }
+p [1, 2, 3].my_inject(1) { |memo, num| memo + num } #should return 7
+
+p [1, 2, 3].my_inject(:+)
