@@ -25,7 +25,7 @@ module Enumerable
     if arg.is_a?(Class)
       my_each { |n| return false unless self[n].is_a?(arg) }
     elsif arg.is_a?(String) || arg.is_a?(Integer)
-      my_each { |n| return false unless self[n] == arg}
+      my_each { |n| return false unless self[n] == arg }
     elsif !arg.nil?
       my_each { |n| return false unless self[n].match(arg) }
     elsif !block_given?
@@ -94,7 +94,7 @@ module Enumerable
   def my_inject(result = 0, symbol = nil)
     symbol, result = result, symbol if result.is_a?(Symbol) and symbol.is_a?(Integer)
     symbol, result = result, 0 if result.is_a?(Symbol)
-    new_array = self.to_a
+    new_array = to_a
     if !block_given?
       case symbol
       when :+
