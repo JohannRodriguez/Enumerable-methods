@@ -2,7 +2,7 @@ module Enumerable
   def my_each
     return to_enum unless block_given?
 
-    length.times { |n| yield(n) }
+    length.times { |n| yield(self[n]) }
     self
   end
 
@@ -112,7 +112,7 @@ module Enumerable
       end
       result
     else
-      length.times { |n| result = yield(result, new_array[n]) }
+      new_array.length.times { |n| result = yield(result, new_array[n]) }
     end
     result
   end
@@ -121,3 +121,14 @@ end
 def multiply_els(arr)
   arr.my_inject { |x, y| x * y }
 end
+
+
+my_each_output = ''
+my_each_output_two = ''
+block = proc { |y| my_each_output += "Hello: #{y}" }
+block_two = proc { |y| my_each_output_two += "Hello: #{y}" }
+p [1,2,32,32,3,21,1,23,12].each(&block_two)
+p [1,2,32,32,3,21,1,23,12].my_each(&block)
+p my_each_output == my_each_output_two
+
+p (1..5).my_inject(4) { |prod, n| prod * n }
