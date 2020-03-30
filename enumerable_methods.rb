@@ -23,13 +23,13 @@ module Enumerable
 
   def my_all?(arg = nil)
     if arg.is_a?(Class)
-      my_each { |n| return false unless n.is_a?(arg) }
+      my_each { |n| return false unless self[n].is_a?(arg) }
     elsif arg.is_a?(String) || arg.is_a?(Integer)
-      my_each { |n| return false unless self[n] == arg }
+      my_each { |n| return false unless self[n] == arg}
     elsif !arg.nil?
       my_each { |n| return false unless self[n].match(arg) }
     elsif !block_given?
-      my_each { |n| return false if n == false || self[n].nil? }
+      my_each { |n| return false if self[n] == false || self[n].nil? }
     else
       my_each { |n| return false unless yield(self[n]) }
     end
@@ -38,13 +38,13 @@ module Enumerable
 
   def my_any?(arg = nil)
     if arg.is_a?(Class)
-      my_each { |n| return true if n.is_a?(arg) }
+      my_each { |n| return true if self[n].is_a?(arg) }
     elsif arg.is_a?(String) || arg.is_a?(Integer)
       my_each { |n| return true if self[n] == arg }
     elsif !arg.nil?
       my_each { |n| return true if self[n].match(arg) }
     elsif !block_given?
-      my_each { |n| return true unless n == false || self[n].nil? }
+      my_each { |n| return true unless self[n] == false || self[n].nil? }
     else
       my_each { |n| return true if yield(self[n]) }
     end
@@ -59,7 +59,7 @@ module Enumerable
     elsif !arg.nil?
       my_each { |n| return false if self[n].match(arg) }
     elsif !block_given?
-      my_each { |n| return false unless n == false || self[n].nil? }
+      my_each { |n| return false unless self[n] == false || self[n].nil? }
     else
       my_each { |n| return false if yield(self[n]) }
     end
@@ -94,24 +94,25 @@ module Enumerable
   def my_inject(result = 0, symbol = nil)
     symbol, result = result, symbol if result.is_a?(Symbol) and symbol.is_a?(Integer)
     symbol, result = result, 0 if result.is_a?(Symbol)
+    new_array = self.to_a
     if !block_given?
       case symbol
       when :+
-        length.times { |n| result += self[n] }
+        new_array.length.times { |n| result += new_array[n] }
       when :*
-        length.times { |n| result *= self[n] }
+        new_array.length.times { |n| result *= new_array[n] }
       when :/
-        length.times { |n| result /= self[n] }
+        new_array.length.times { |n| result /= new_array[n] }
       when :-
-        length.times { |n| result -= self[n] }
+        new_array.length.times { |n| result -= new_array[n] }
       when :**
-        length.times { |n| result **= self[n] }
+        new_array.length.times { |n| result **= new_array[n] }
       when :%
-        length.times { |n| result %= self[n] }
+        new_array.length.times { |n| result %= new_array[n] }
       end
       result
     else
-      length.times { |n| result = yield(result, self[n]) }
+      length.times { |n| result = yield(result, new_array[n]) }
     end
     result
   end
