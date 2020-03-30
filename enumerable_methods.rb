@@ -17,51 +17,51 @@ module Enumerable
     return to_enum unless block_given?
 
     new_array = []
-    my_each { |n| new_array.push(self[n]) if yield(self[n]) }
+    length.times { |n| new_array.push(self[n]) if yield(self[n]) }
     new_array
   end
 
   def my_all?(arg = nil)
     if arg.is_a?(Class)
-      my_each { |n| return false unless self[n].is_a?(arg) }
+      length.times { |n| return false unless self[n].is_a?(arg) }
     elsif arg.is_a?(String) || arg.is_a?(Integer)
-      my_each { |n| return false unless self[n] == arg }
+      length.times { |n| return false unless self[n] == arg }
     elsif !arg.nil?
-      my_each { |n| return false unless self[n].match(arg) }
+      length.times { |n| return false unless self[n].match(arg) }
     elsif !block_given?
-      my_each { |n| return false if self[n] == false || self[n].nil? }
+      length.times { |n| return false if self[n] == false || self[n].nil? }
     else
-      my_each { |n| return false unless yield(self[n]) }
+      length.times { |n| return false unless yield(self[n]) }
     end
     true
   end
 
   def my_any?(arg = nil)
     if arg.is_a?(Class)
-      my_each { |n| return true if self[n].is_a?(arg) }
+      length.times { |n| return true if self[n].is_a?(arg) }
     elsif arg.is_a?(String) || arg.is_a?(Integer)
-      my_each { |n| return true if self[n] == arg }
+      length.times { |n| return true if self[n] == arg }
     elsif !arg.nil?
-      my_each { |n| return true if self[n].match(arg) }
+      length.times { |n| return true if self[n].match(arg) }
     elsif !block_given?
-      my_each { |n| return true unless self[n] == false || self[n].nil? }
+      length.times { |n| return true unless self[n] == false || self[n].nil? }
     else
-      my_each { |n| return true if yield(self[n]) }
+      length.times { |n| return true if yield(self[n]) }
     end
     false
   end
 
   def my_none?(arg = nil)
     if arg.is_a?(Class)
-      my_each { |n| return false if self[n].is_a?(arg) }
+      length.times { |n| return false if self[n].is_a?(arg) }
     elsif arg.is_a?(String) || arg.is_a?(Integer)
-      my_each { |n| return false if self[n] == arg }
+      length.times { |n| return false if self[n] == arg }
     elsif !arg.nil?
-      my_each { |n| return false if self[n].match(arg) }
+      length.times { |n| return false if self[n].match(arg) }
     elsif !block_given?
-      my_each { |n| return false unless self[n] == false || self[n].nil? }
+      length.times { |n| return false unless self[n] == false || self[n].nil? }
     else
-      my_each { |n| return false if yield(self[n]) }
+      length.times { |n| return false if yield(self[n]) }
     end
     true
   end
@@ -69,13 +69,13 @@ module Enumerable
   def my_count(arg = nil)
     unless block_given?
       counter = 0
-      my_each { |n| counter += 1 if self[n] == arg }
+      length.times { |n| counter += 1 if self[n] == arg }
       return counter unless arg.nil?
 
       return length
     end
     counter = 0
-    my_each { |n| counter += 1 if yield(self[n]) }
+    length.times { |n| counter += 1 if yield(self[n]) }
     counter
   end
 
@@ -84,9 +84,9 @@ module Enumerable
 
     new_array = []
     if proc.nil?
-      my_each { |n| new_array.push(yield(self[n])) }
+      length.times { |n| new_array.push(yield(self[n])) }
     else
-      my_each { |n| new_array.push(proc.call(self[n])) }
+      length.times { |n| new_array.push(proc.call(self[n])) }
     end
     new_array
   end
@@ -121,3 +121,19 @@ end
 def multiply_els(arr)
   arr.my_inject { |x, y| x * y }
 end
+
+test_array1 = [11, 2, 3, 56]
+test_array2 = %w[a b c d]
+# my_each
+p 'my_each'
+test_array1.my_each { |x| p x }
+test_array1.each { |x| p x }
+test_array2.my_each { |x| p x }
+test_array2.each { |x| p x }
+p test_array2.my_each
+p test_array2.each
+# my_each_with_index
+p 'my_each-with_index'
+test_array1.my_each_with_index { |x, y| p "item: #{x}, index: #{y}" }
+test_array1.each_with_index { |x, y| p "item: #{x}, index: #{y}" }
+test_array2.each_with_index(2) { |x, y| p "item: #{x}, index: #{y}" }
