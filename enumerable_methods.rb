@@ -121,14 +121,3 @@ end
 def multiply_els(arr)
   arr.my_inject { |x, y| x * y }
 end
-
-
-my_each_output = ''
-my_each_output_two = ''
-block = proc { |y| my_each_output += "Hello: #{y}" }
-block_two = proc { |y| my_each_output_two += "Hello: #{y}" }
-p [1,2,32,32,3,21,1,23,12].each(&block_two)
-p [1,2,32,32,3,21,1,23,12].my_each(&block)
-p my_each_output == my_each_output_two
-
-p (1..5).my_inject(4) { |prod, n| prod * n }
