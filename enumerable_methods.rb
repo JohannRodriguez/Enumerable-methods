@@ -95,6 +95,7 @@ module Enumerable
     symbol, result = result, symbol if result.is_a?(Symbol) and symbol.is_a?(Integer)
     symbol, result = result, 0 if result.is_a?(Symbol)
     new_array = to_a
+    result = '' if new_array[0].is_a?(String)
     if !block_given?
       case symbol
       when :+
