@@ -121,3 +121,6 @@ end
 def multiply_els(arr)
   arr.my_inject { |x, y| x * y }
 end
+
+
+p [1,2,3,4].my_inject(:+)
