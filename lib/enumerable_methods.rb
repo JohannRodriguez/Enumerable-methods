@@ -11,8 +11,9 @@ module Enumerable
   def my_each_with_index
     return to_enum unless block_given?
 
-    length.times { |n| yield(self[n], n) }
-    self
+    new_array = []
+    length.times { |n| yield(new_array.push(self[n], n)) }
+    new_array
   end
 
   def my_select
@@ -125,4 +126,4 @@ def multiply_els(arr)
   arr.my_inject { |x, y| x * y }
 end
 
-p [11, 2, 3, 56].my_each { |x| p x }
+p [11, 2, 3, 56].my_each_with_index { |n, i| print [n, i] }
