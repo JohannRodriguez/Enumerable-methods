@@ -42,4 +42,28 @@ describe Enumerable do
       expect([].my_any?).to eql(false)
     end
   end
+
+  describe '#my_none?' do
+    it 'returns true if none of the items returns false in a given test' do
+      expect([1, 3.14, 42].my_none?(Float)).to eql(false)
+    end
+  end
+
+  describe '#my_count' do
+    it 'returns the number of items that return true for a given test' do
+      expect([1, 5, 63, 3, 0].my_count { |x| x > 20 }).to eql(1)
+    end
+  end
+
+  describe '#my_map' do
+    it 'returns an array of results of running a block with each item' do
+      expect((1..4).my_map { |i| i * i }).to eql([1, 4, 9, 16])
+    end
+  end
+
+  describe '#my_inject' do
+    it 'Combines all items by applying binary operation' do
+      expect((5..10).inject { |sum, n| sum + n }).to eql(45)
+    end
+  end
 end

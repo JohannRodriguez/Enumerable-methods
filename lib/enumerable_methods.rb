@@ -87,9 +87,9 @@ module Enumerable
 
     new_array = []
     if proc.nil?
-      length.times { |n| new_array.push(yield(self[n])) }
+      to_a.length.times { |n| new_array.push(yield(to_a[n])) }
     else
-      length.times { |n| new_array.push(proc.call(self[n])) }
+      to_a.length.times { |n| new_array.push(proc.call(to_a[n])) }
     end
     new_array
   end
@@ -125,5 +125,3 @@ end
 def multiply_els(arr)
   arr.my_inject { |x, y| x * y }
 end
-
-p [11, 2, 3, 56].my_each_with_index { |n, i| print [n, i] }
