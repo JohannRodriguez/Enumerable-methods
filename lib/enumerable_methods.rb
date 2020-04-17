@@ -20,51 +20,51 @@ module Enumerable
     return to_enum unless block_given?
 
     new_array = []
-    length.times { |n| new_array.push(self[n]) if yield(self[n]) }
+    to_a.length.times { |n| new_array.push(self.to_a[n]) if yield(self.to_a[n]) }
     new_array
   end
 
   def my_all?(arg = nil)
     if arg.is_a?(Class)
-      length.times { |n| return false unless self[n].is_a?(arg) }
+      to_a.length.times { |n| return false unless to_a[n].is_a?(arg) }
     elsif arg.is_a?(String) || arg.is_a?(Integer)
-      length.times { |n| return false unless self[n] == arg }
+      to_a.length.times { |n| return false unless to_a[n] == arg }
     elsif !arg.nil?
-      length.times { |n| return false unless self[n].match(arg) }
+      to_a.length.times { |n| return false unless to_a[n].match(arg) }
     elsif !block_given?
-      length.times { |n| return false if self[n] == false || self[n].nil? }
+      to_a.length.times { |n| return false if to_a[n] == false || to_a[n].nil? }
     else
-      length.times { |n| return false unless yield(self[n]) }
+      to_a.length.times { |n| return false unless yield(to_a[n]) }
     end
     true
   end
 
   def my_any?(arg = nil)
     if arg.is_a?(Class)
-      length.times { |n| return true if self[n].is_a?(arg) }
+      to_a.length.times { |n| return true if to_a[n].is_a?(arg) }
     elsif arg.is_a?(String) || arg.is_a?(Integer)
-      length.times { |n| return true if self[n] == arg }
+      to_a.length.times { |n| return true if to_a[n] == arg }
     elsif !arg.nil?
-      length.times { |n| return true if self[n].match(arg) }
+      to_a.length.times { |n| return true if to_a[n].match(arg) }
     elsif !block_given?
-      length.times { |n| return true unless self[n] == false || self[n].nil? }
+      to_a.length.times { |n| return true unless to_a[n] == false || to_a[n].nil? }
     else
-      length.times { |n| return true if yield(self[n]) }
+      to_a.length.times { |n| return true if yield(to_a[n]) }
     end
     false
   end
 
   def my_none?(arg = nil)
     if arg.is_a?(Class)
-      length.times { |n| return false if self[n].is_a?(arg) }
+      to_a.length.times { |n| return false if to_a[n].is_a?(arg) }
     elsif arg.is_a?(String) || arg.is_a?(Integer)
-      length.times { |n| return false if self[n] == arg }
+      to_a.length.times { |n| return false if to_a[n] == arg }
     elsif !arg.nil?
-      length.times { |n| return false if self[n].match(arg) }
+      to_a.length.times { |n| return false if to_a[n].match(arg) }
     elsif !block_given?
-      length.times { |n| return false unless self[n] == false || self[n].nil? }
+      to_a.length.times { |n| return false unless to_a[n] == false || to_a[n].nil? }
     else
-      length.times { |n| return false if yield(self[n]) }
+      to_a.length.times { |n| return false if yield(to_a[n]) }
     end
     true
   end
@@ -125,3 +125,5 @@ end
 def multiply_els(arr)
   arr.my_inject { |x, y| x * y }
 end
+
+p [11, 2, 3, 56].my_any?(11)
