@@ -24,7 +24,22 @@ describe Enumerable do
 
   describe '#my_select' do
     it 'returns an array of selected items that pass a test' do
-      expect([11, 2, 3, 56].my_select { |x| x > 10 }).to eql([11, 56])
+      expect([1, 2, 3, 4, 5].my_select(&:even?)).to eql([2, 4])
+    end
+  end
+
+  describe '#my_all?' do
+    it 'returns true if all items in an array pass a test' do
+      expect(%w[ant bear cat].my_all? { |word| word.length >= 3 }).to eql(true)
+    end
+  end
+
+  describe '#my_any?' do
+    it 'returns true if any item in an array pass a given test' do
+      expect([nil, true, 99].my_any?).to eql(true)
+    end
+    it 'returns false if no value is given' do
+      expect([].my_any?).to eql(false)
     end
   end
 end

@@ -1,4 +1,4 @@
-#lib/enumerable_methods.rb
+# lib/enumerable_methods.rb
 
 module Enumerable
   def my_each
