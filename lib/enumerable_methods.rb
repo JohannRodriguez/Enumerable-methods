@@ -1,3 +1,5 @@
+#lib/enumerable_methods.rb
+
 module Enumerable
   def my_each
     return to_enum unless block_given?
@@ -122,3 +124,5 @@ end
 def multiply_els(arr)
   arr.my_inject { |x, y| x * y }
 end
+
+p [11, 2, 3, 56].my_each { |x| p x }
