@@ -1,3 +1,5 @@
+# lib/enumerable_methods.rb
+
 module Enumerable
   def my_each
     return to_enum unless block_given?
@@ -9,59 +11,60 @@ module Enumerable
   def my_each_with_index
     return to_enum unless block_given?
 
-    length.times { |n| yield(self[n], n) }
-    self
+    new_array = []
+    length.times { |n| yield(new_array.push(self[n], n)) }
+    new_array
   end
 
   def my_select
     return to_enum unless block_given?
 
     new_array = []
-    length.times { |n| new_array.push(self[n]) if yield(self[n]) }
+    to_a.length.times { |n| new_array.push(self.to_a[n]) if yield(self.to_a[n]) }
     new_array
   end
 
   def my_all?(arg = nil)
     if arg.is_a?(Class)
-      length.times { |n| return false unless self[n].is_a?(arg) }
+      to_a.length.times { |n| return false unless to_a[n].is_a?(arg) }
     elsif arg.is_a?(String) || arg.is_a?(Integer)
-      length.times { |n| return false unless self[n] == arg }
+      to_a.length.times { |n| return false unless to_a[n] == arg }
     elsif !arg.nil?
-      length.times { |n| return false unless self[n].match(arg) }
+      to_a.length.times { |n| return false unless to_a[n].match(arg) }
     elsif !block_given?
-      length.times { |n| return false if self[n] == false || self[n].nil? }
+      to_a.length.times { |n| return false if to_a[n] == false || to_a[n].nil? }
     else
-      length.times { |n| return false unless yield(self[n]) }
+      to_a.length.times { |n| return false unless yield(to_a[n]) }
     end
     true
   end
 
   def my_any?(arg = nil)
     if arg.is_a?(Class)
-      length.times { |n| return true if self[n].is_a?(arg) }
+      to_a.length.times { |n| return true if to_a[n].is_a?(arg) }
     elsif arg.is_a?(String) || arg.is_a?(Integer)
-      length.times { |n| return true if self[n] == arg }
+      to_a.length.times { |n| return true if to_a[n] == arg }
     elsif !arg.nil?
-      length.times { |n| return true if self[n].match(arg) }
+      to_a.length.times { |n| return true if to_a[n].match(arg) }
     elsif !block_given?
-      length.times { |n| return true unless self[n] == false || self[n].nil? }
+      to_a.length.times { |n| return true unless to_a[n] == false || to_a[n].nil? }
     else
-      length.times { |n| return true if yield(self[n]) }
+      to_a.length.times { |n| return true if yield(to_a[n]) }
     end
     false
   end
 
   def my_none?(arg = nil)
     if arg.is_a?(Class)
-      length.times { |n| return false if self[n].is_a?(arg) }
+      to_a.length.times { |n| return false if to_a[n].is_a?(arg) }
     elsif arg.is_a?(String) || arg.is_a?(Integer)
-      length.times { |n| return false if self[n] == arg }
+      to_a.length.times { |n| return false if to_a[n] == arg }
     elsif !arg.nil?
-      length.times { |n| return false if self[n].match(arg) }
+      to_a.length.times { |n| return false if to_a[n].match(arg) }
     elsif !block_given?
-      length.times { |n| return false unless self[n] == false || self[n].nil? }
+      to_a.length.times { |n| return false unless to_a[n] == false || to_a[n].nil? }
     else
-      length.times { |n| return false if yield(self[n]) }
+      to_a.length.times { |n| return false if yield(to_a[n]) }
     end
     true
   end
@@ -84,9 +87,9 @@ module Enumerable
 
     new_array = []
     if proc.nil?
-      length.times { |n| new_array.push(yield(self[n])) }
+      to_a.length.times { |n| new_array.push(yield(to_a[n])) }
     else
-      length.times { |n| new_array.push(proc.call(self[n])) }
+      to_a.length.times { |n| new_array.push(proc.call(to_a[n])) }
     end
     new_array
   end
