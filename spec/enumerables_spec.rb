@@ -31,11 +31,9 @@ describe Enumerable do
     end
     it 'Returns an array of selected items if ther are odd' do
       expect(test_range.my_select(&:odd?)).to eql([1, 3])
-
     end
     it 'Expect enumerator when no block is given' do
       expect(test_array_numbers.my_select).to be_kind_of(Enumerator)
-
     end
   end
 
